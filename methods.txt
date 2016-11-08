@@ -1,0 +1,99 @@
+int findEndLoop(int start, int inputLength, std::string input){
+
+	char current;
+	int count = 0;
+	int endIndex = 0;
+
+	for(int i = start + 1; i < inputLength; ++i){
+		if(input[i] == '{'){
+			count++;
+		} else if(input[i] == '}'){
+			if(count != 0){
+				count--;
+			} else {
+				return (i + 1);
+			}
+		}
+	}
+	return endIndex;
+}
+
+void runCrazy(int start, int inputLength, std::string input){
+
+	char command;
+
+	int startLoopIndex = 0;
+
+	int index = start;
+	while(index < inputLength){
+		command = input[index];
+
+		switch(command){
+
+			case(INCREMENT):
+			increment();
+			index++;
+			break;
+
+			case(DECREMENT):
+			decrement();
+			index++;
+			break;
+
+			case(RIGHT):
+			index++;
+			dpIndex++;
+			if(dpIndex > 999){ //wraparound
+
+				dpIndex -= 1000;
+
+			}
+			moveRight();
+			break;
+
+			case(LEFT):
+			index++;
+			dpIndex--;
+			if(dpIndex < 0){ //wraparound
+				dpIndex = 1000 + dpIndex;
+			}
+			moveLeft();
+			break;
+
+			case(INT_PRINT):
+			printInt();
+			index++;
+			break;
+
+			case(CHAR_PRINT):
+			printAsChar();
+			index++;
+			break;
+
+			case(ENTER_LOOP):{
+
+				int endLoopIndex = findEndLoop(index, inputLength, input);
+
+				if(*dp == 0){
+					index = endLoopIndex;
+				} else {
+					startLoopIndex = index + 1;
+					runCrazy(startLoopIndex, endLoopIndex - 1, input);
+					index = index;
+				}
+			}
+			break;
+
+			case(' '):
+			index++;
+			break;
+
+			default:
+			index++;
+			break;
+
+		}
+	}
+	
+
+}
